@@ -41,15 +41,17 @@ int main(char argc, char* argv[]){
     }
     printf("Connect succesfully.\n");
     struct SinhVien sv;
-    int ret = recv(client, &sv, sizeof(sv), 0);
+    recv(client, &sv, sizeof(sv), 0);
     char ipAddr[256];
     char time_str [1028];
-    recv(client, ipAddr, sizeof(ipAddr), 0);
+    int ret = recv(client, ipAddr, sizeof(ipAddr), 0);
+    ipAddr[ret] = 0;
     time_t currentTime;
     struct tm *local_time;
     time(&currentTime);
     local_time = localtime(&currentTime);
     strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", local_time);
+    printf("%s %s %s %s %s %.2lf\n", ipAddr, time_str, sv.MSSV, sv.hoTen, sv.dob, sv.diem);
     FILE *fp = fopen(argv[2], "a");
     fprintf(fp, "%s %s %s %s %s %.2lf\n", ipAddr, time_str, sv.MSSV, sv.hoTen, sv.dob, sv.diem);
     fclose(fp);
